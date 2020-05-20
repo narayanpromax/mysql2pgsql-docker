@@ -1,0 +1,29 @@
+version: '3.6'
+services:
+  postgres:
+    build: postgres-with-pgloader
+    container_name: postgres-db
+    ports:
+      - '5431:5432'
+    restart: always
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: root
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql-db
+    ports:
+      - '3307:3306'
+    volumes:
+      - /var/lib/mysql
+      - ./migrations:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_DATABASE: database
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: root_password
+
+volumes:
+  db_data:
